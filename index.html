@@ -1,0 +1,141 @@
+
+<!doctype html>
+<html>
+
+	<head>
+		<title>Pie Chart 2</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+		<script src="utils.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+	</head>
+
+	<body>
+		<script>
+			let data;
+			axios.get('https://pomber.github.io/covid19/timeseries.json') // one time, will never leave this point without finish or fail.
+				  .then(function (response) {
+			    // handle success
+				data = response.data;
+			 	for(i =0 ; i <75 ; i++)
+				var config = [];
+				var numberOfCases = 0;
+				var dayIndex = data['US'].length-1;
+
+				Object.keys(data).forEach(function(key){
+						numberOfCases = numberOfCases + data[key][dayIndex].confirmed;
+				});
+				
+				// console.log(numberOfCases)
+				var countries = [];
+				var k =0 ;
+				
+				Object.keys(data).forEach(function(key){
+				
+					countries[k] = {name:key, confirmed:data[key][dayIndex].confirmed}
+					k++;
+					
+				});
+
+				countries.sort(function(a,b) {
+					return b.confirmed - a.confirmed
+				});
+				
+				let map = new Map() ;
+				
+				for(i = 0; i < k; i++){
+					map.set(countries[i].name, i);
+				}
+				// console.log(countries)
+				// console.log(map)
+				
+				Object.keys(data).forEach(function(key){
+				
+				
+					c = data[key][dayIndex].confirmed;
+					d = data[key][dayIndex].deaths;
+					r = data[key][dayIndex].recovered;
+
+					config[map.get(key)] = {
+						type: 'pie',
+						data: {
+								datasets: [{
+									data: [
+										  (c - d - r),
+										 d,
+										 r,
+										 (numberOfCases - c),
+									],
+									backgroundColor: [
+										"#00ccff",
+										"#e60000",
+										"#00cc00",
+										"#e0ebeb",
+									],
+									label: 'Dataset 1'
+								}],
+								labels: [
+									key + ' - Active Cases '+ ( c - d - r )  ,
+									key + ' - Deaths ' +  d ,
+									key + ' - Recovered Cases ' + r,
+									'Other Countries - All Cases ' + (numberOfCases - c)
+								]
+								},
+						options: {
+							responsive: true
+						}
+					};
+				});
+
+				var para = document.createElement("P");   
+				para
+				para.innerText = data['US'][dayIndex].date;              
+				document.body.appendChild(para);       
+
+				for( let counter=0 ; counter<k ; counter++) {
+					var canvas = document.createElement('canvas');
+					canvas.id = counter;
+					canvas.className = counter;
+					document.getElementsByTagName('body')[0].appendChild(canvas);
+				}
+
+				var counter = 0,
+			    interval;
+
+				var drawCanvas = function () {
+					var ctx = document.getElementById(counter).getContext('2d');
+					window.myPie = new Chart(ctx, config[counter]);
+				};
+
+				interval = window.setInterval(function () {
+
+				    if (counter < k) {
+				        drawCanvas();
+				        counter += 1;
+				    } else {
+				        window.clearInterval(interval);
+				    }
+
+				}, 25);
+
+
+				
+
+			})
+			.catch(function (error) {
+			// handle error, alert something for the user
+			console.log(error);
+			})
+			.then(function () {
+			// always executed, could be anything
+
+			});
+
+		</script>
+
+	</body>
+
+</html>
+
