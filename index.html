@@ -174,15 +174,17 @@
 
 					var canvas = document.createElement('canvas');
 					canvas.id = counter;
-					canvas.className = counter;
+					canvas.className = 'lazy';
+					canvas.class = 'lazy';
 					var br = document.createElement("br");
 					document.getElementById('chartContainer'+ counter).appendChild(canvas);
 					
 					var img = document.createElement('img');
 					img.id = counter + k;
-					img.className = counter + k;
+					img.className = 'lazy';
+					img.class = 'lazy';
 
-					// canvas2.style="width:100%";
+				 	img.style="width:100%";
 					
 				  	document.getElementById('chernoffContainer' + counter).appendChild(img);
 				}
@@ -206,7 +208,7 @@
 
 	  				img.style.height = canvas.style.height ;
 	  				img.style.width = canvas.style.width*(0.50)  ;
-	  				img.class = "lazy" ;
+	  				// img.className = "lazy" ;
 					img.src = countriesNames[counter]+'.jpg';
 
 				};
@@ -221,7 +223,7 @@
 				        
 				    }
 
-				}, 1000);
+				}, 100);
 			})
 			.catch(function (error) {
 			// handle error, alert something for the user
