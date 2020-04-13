@@ -17,17 +17,9 @@
 		</style>
 
 		<title>Corona Visrus Cases</title>
-		<script
-			  	src="https://code.jquery.com/jquery-3.4.1.min.js"
-			  	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-				crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.10/jquery.lazy.min.js"></script>
-		<script type="text/javascript"> $(function() {
-        	$('.lazy').lazy();
-    		});</script>
+		
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 	</head>
@@ -193,7 +185,7 @@
 
 				 	img.style="width:100%";
 					img.alt = countriesNames[counter];
-					img.src = countriesNames[counter]+'.jpg';
+					img.src = countriesNames[counter]+'.webp';
 
 				  	document.getElementById('chernoffContainer' + counter).appendChild(img);
 				}
