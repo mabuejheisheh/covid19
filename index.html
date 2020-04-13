@@ -32,7 +32,7 @@
 	 	
 	 	<div id="days"  style=" width: 100%;"></div> 
 		<div id="container" class = "flex_div_col" style=" width: 100%;"></div> 
-	 	<div id="more"  style=" width: 100%;"></div> 
+	 	<div id="more"  align="center" style=" width: 100%;"></div> 
 
 	
 		 <script>
@@ -219,9 +219,10 @@
 				}, 100);
 				var btnMore = document.createElement("input");
 				btnMore.type = 'submit';
-				btnMore.value = 'more';
+				btnMore.value = 'Add more figures';
 				btnMore.id = 'btnMore';
-
+				btnMore.style.width ='20%'
+				btnMore.style="font-size:24px;"
 				btnMore.addEventListener('click', function(){
 					m += 25;
 					if(m>k){
