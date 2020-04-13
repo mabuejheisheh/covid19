@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html>
+<html lang="en" >
 
 	<head>
 		<style>
@@ -86,7 +86,7 @@
 
 
 				Object.keys(data).forEach(function(key){
-						numberOfCases = numberOfCases + data[key][dayIndex].confirmed;
+					numberOfCases = numberOfCases + data[key][dayIndex].confirmed;
 				});
 				
 				var countries = [];
@@ -108,6 +108,16 @@
 				for(i = 0; i < k; i++){
 					map.set(countries[i].name, i);
 					countriesNames[i] = countries[i].name;
+					if(countriesNames[i]=='Taiwan*')
+						countriesNames[i] = 'Taiwan';
+
+					if(countriesNames[i]=='West Bank and Gaza')
+						countriesNames[i] = 'Palestinian Territories';
+
+					if(countriesNames[i]=='Korea, South')
+						countriesNames[i] = 'South Korea';
+
+
 				}
 
 				Object.keys(data).forEach(function(key){
@@ -147,9 +157,7 @@
 						}
 					};
 				});
- 
-				// document.getElementById('chartContainer').innerText = data['US'][dayIndex].date ;
-				   
+ 				   
 
 				for( let counter=0 ; counter<k ; counter++) {
 					var div1 = document.createElement('div');
@@ -185,32 +193,23 @@
 					img.class = 'lazy';
 
 				 	img.style="width:100%";
-					
+					img.alt = countriesNames[counter];
+					img.src = countriesNames[counter]+'.jpg';
+
 				  	document.getElementById('chernoffContainer' + counter).appendChild(img);
 				}
 
 				var counter = 0,
 			    interval;
+				var canvas = document.getElementById(0);
 
 				var drawCanvas = function () {
 					var ctx = document.getElementById(counter).getContext('2d');
-					ctx.width = "100px";
-					ctx.height = "100px";
-
 					window.myPie = new Chart(ctx, config[counter]);
-					
-					var canvas = document.getElementById(counter );
-						
-					
 					var img = document.getElementById(counter + k );
 	  				img.height = canvas.height ;
-	  				img.width = canvas.width*(0.50) ;
-
 	  				img.style.height = canvas.style.height ;
-	  				img.style.width = canvas.style.width*(0.50)  ;
-	  				// img.className = "lazy" ;
-					img.src = countriesNames[counter]+'.jpg';
-
+	  				
 				};
 
 				interval = window.setInterval(function () {
