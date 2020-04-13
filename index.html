@@ -20,6 +20,7 @@
 		
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
+		<script src="utils.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 	</head>
@@ -32,6 +33,7 @@
 	 	
 	 	<div id="days"  style=" width: 100%;"></div> 
 		<div id="container" class = "flex_div_col" style=" width: 100%;"></div> 
+	 	<div id="more"  style=" width: 100%;"></div> 
 
 	
 		 <script>
@@ -43,6 +45,8 @@
 				  .then(function (response) {
 			    // handle success
 				data = response.data;
+
+				
 
 				var select = document.createElement("select");
 			  	select.name = "days";
@@ -61,7 +65,7 @@
 				label.htmlFor = "days";
 
 				document.getElementById("days").appendChild(label).appendChild(select);
-
+				
 				var config = [];
 				var numberOfCases = 0;
 				var dayIndex = data['US'].length-1;
@@ -150,7 +154,12 @@
 				});
  				   
 
-				for( let counter=0 ; counter<k ; counter++) {
+
+				var counter = 0,
+			    interval;
+				// var canvas = document.getElementById(0);
+
+				var drawCanvas = function () {
 					var div1 = document.createElement('div');
 					div1.id = "container" +counter; 
 					div1.className = "flex_div_row";
@@ -175,8 +184,9 @@
 					canvas.id = counter;
 					canvas.className = 'lazy';
 					canvas.class = 'lazy';
-					var br = document.createElement("br");
 					document.getElementById('chartContainer'+ counter).appendChild(canvas);
+					var ctx = canvas.getContext('2d');
+					window.myPie = new Chart(ctx, config[counter]);
 					
 					var img = document.createElement('img');
 					img.id = counter + k;
@@ -186,26 +196,20 @@
 				 	img.style="width:100%";
 					img.alt = countriesNames[counter];
 					img.src = countriesNames[counter]+'.webp';
-
-				  	document.getElementById('chernoffContainer' + counter).appendChild(img);
-				}
-
-				var counter = 0,
-			    interval;
-				var canvas = document.getElementById(0);
-
-				var drawCanvas = function () {
-					var ctx = document.getElementById(counter).getContext('2d');
-					window.myPie = new Chart(ctx, config[counter]);
-					var img = document.getElementById(counter + k );
-	  				img.height = canvas.height ;
+					img.height = canvas.height ;
 	  				img.style.height = canvas.style.height ;
-	  				
+					img.src = countriesNames[counter]+'.webp';
+	  			
+				  	document.getElementById('chernoffContainer' + counter).appendChild(img);
+
+
+					
 				};
 
+				var m = 25;
 				interval = window.setInterval(function () {
 
-				    if (counter < k) {
+				    if (counter < m) {
 				        drawCanvas();
 				        counter += 1;
 				    } else {
@@ -213,7 +217,34 @@
 				        
 				    }
 
-				}, 150);
+				}, 100);
+				var btnMore = document.createElement("input");
+				btnMore.type = 'submit';
+				btnMore.value = 'more';
+				btnMore.id = 'btnMore';
+
+				btnMore.addEventListener('click', function(){
+					m += 25;
+					if(m>k){
+						m = k;
+						btnMore.parentNode.removeChild(btnMore);
+					}
+					interval = window.setInterval(function () {
+
+					    if (counter < m) {
+					        drawCanvas();
+					        counter += 1;
+					    } else {
+					        window.clearInterval(interval);
+					        
+					    }
+
+					}, 100);
+				}, false);
+  					console.log("event on button");
+
+				document.getElementById("more").appendChild(btnMore)
+  				
 			})
 			.catch(function (error) {
 			// handle error, alert something for the user
